@@ -3,14 +3,19 @@ const app = express();
 export default app;
 
 import morgan from "morgan";
-
+import usersRouter from "#api/users";
 import tracksRouter from "#api/tracks";
 import playlistsRouter from "#api/playlists";
+import getUserFromToken from "#middleware/getUserFromToken";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+// Attach user to request when a valid Bearer token is provided
+app.use(getUserFromToken);
+
+app.use("/users", usersRouter);
 app.use("/tracks", tracksRouter);
 app.use("/playlists", playlistsRouter);
 
